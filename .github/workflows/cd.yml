@@ -2,7 +2,7 @@ name: CD - Build and Push Docker Image
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
   workflow_dispatch:
 
 permissions:
