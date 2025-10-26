@@ -14,6 +14,11 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Healthcheck simple para pruebas y monitoreo
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 const authRoutes = require("./routes/auth");
 app.use("/api/auth", authRoutes);
 
@@ -22,6 +27,12 @@ app.use('/api/share', shareRouter)
 app.use('/api/users', userRoutes);
 app.use('/api/logs', logsRoutes);
 
-app.listen(3001, () => {
-  console.log('Servidor corriendo en http://localhost:3001');
-});
+// Exporta la app para pruebas y arranca el servidor solo si es el proceso principal
+const PORT = process.env.PORT || 3001;
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
